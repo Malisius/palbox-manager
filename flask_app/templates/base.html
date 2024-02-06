@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="/static/favicons/favicon.ico"
+            type="image/x-icon">
+        <title>Palbox Manager</title>
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css"
+            integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls"
+            crossorigin="anonymous">
+        <link rel="stylesheet" href="/static/css/styles.css">
+    </head>
+    <body>
+        <div id="layout">
+            <a href="#menu" class="menu-link" id="menuLink">
+                <span></span>
+            </a>
+            <div id="menu">
+                <div class="pure-menu">
+                    <a class="pure-menu-heading" href="#">
+                        <img class='nav-logo-img'
+                            src="/static/img/logo_transparent.png"
+                            alt="Palbox Manager Logo">Palbox Manager</a>
+                    <ul class="pure-menu-list">
+                        <li class="pure-menu-item {{ " menu-item-divided
+                            pure-menu-selected" if location == 'dashboard' else
+                            None}}">
+                            <a href="/"
+                                class="pure-menu-link">Dashboard</a></li>
+                        <li class="pure-menu-item {{ " menu-item-divided
+                            pure-menu-selected" if location == 'stats' else
+                            None}}"><a href="/stats"
+                                class="pure-menu-link">Stats</a></li>
+                        <li class="pure-menu-item {{ " menu-item-divided
+                            pure-menu-selected" if location == 'setup' else
+                            None}}"><a href="/setup"
+                                class="pure-menu-link">Setup</a></li>
+                    </ul>
+                </div>
+            </div>
+            {% block content %}
+            {% endblock %}
+        </div>
+        <script src="/static/js/ui.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </body>
+</html>
