@@ -289,7 +289,8 @@ Hides the menu at `48em`, but modify this based on your app's needs.
     border-radius: 10px;
 }
 
-.signin {
+.signin,
+.button-full-width {
     width: 100%;
 }
 
@@ -300,4 +301,32 @@ Hides the menu at `48em`, but modify this based on your app's needs.
 .pure-control-group input {
     flex: 100%;
     margin-right: 10px;
+}
+
+.modal {
+    position: absolute;
+    background-color: #acacac;
+    top: 0;
+    width: 60vw;
+    height: 60vh;
+    margin: 10vh 10vw;
+    padding: 10vh 10vw;
+}
+
+.modal .close-button {
+    top: 5px;
+    right: 5px;
+    position: absolute;
+}
+
+.material-button:hover {
+    cursor: pointer;
+}
+
+.form-error {
+    flex: 100;
+    border-radius: 15px;
+    background-color: red;
+    color: white;
+    padding: 20px;
 }

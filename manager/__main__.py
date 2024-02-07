@@ -4,9 +4,20 @@
 import json
 import sys
 from pathlib import Path
-from flask import Flask, render_template, request, session, redirect, url_for
+from tabnanny import check
+from flask import (
+    Flask,
+    flash,
+    get_flashed_messages,
+    render_template,
+    request,
+    session,
+    redirect,
+    url_for,
+)
 from logging.config import dictConfig
 from functools import wraps
+from hashlib import sha256
 
 CONFIG_FILEPATH: str = "config/palbox_config.json"
 config = {}
@@ -32,12 +43,13 @@ dictConfig(
 )
 
 app = Flask(__name__)
+app.secret_key = "terriblekey"
 
 
 def check_allowed(func):
     @wraps(func)
     def inner(*args, **kwargs):
-        if not config.get("manager"):
+        if not config.get("password"):
             app.logger.info(
                 "Didn't find correct manager configuration, redirecting to first setup."
             )
@@ -60,6 +72,9 @@ def home() -> str:
 @app.route("/signin", methods=["GET", "POST"])
 @check_allowed
 def signin() -> str:
+    if "signedin" in config:
+        return redirect(url_for(home))
+
     if request.method == "GET":
         return render_template("signin.html")
 
@@ -70,10 +85,49 @@ def stats() -> str:
     return render_template("stats.html", location="stats")
 
 
-@check_allowed
-@app.route("/setup")
+@app.route("/setup", methods=["GET", "POST"])
 def setup() -> str:
-    return render_template("setup.html", location="setup")
+    if "manager" in config:
+        return redirect(url_for("signin"))
+
+    if request.method == "GET":
+        return render_template("setup.html")
+
+    if not request.form.get("password"):
+        flash("ERROR: Missing password field")
+        return render_template("setup.html")
+
+    update_config(
+        "password",
+        sha256(request.form.get("password").encode("utf-8")).hexdigest(),
+    )
+
+
+@app.route("/settings")
+@check_allowed
+def settings() -> str:
+    return render_template("settings.html", location="settings")
+
+
+@app.route("/palworld_settings")
+@check_allowed
+def palworld_settings() -> str:
+    return render_template(
+        "palworld_settings.html", location="palworld_settings"
+    )
+
+
+def update_config(key: str, value: str):
+    app.logger.debug(f"Updating config key: {key}")
+    config[key] = value
+
+    try:
+        with open(CONFIG_FILEPATH, "w") as file:
+            json.dump(config, file)
+    except FileNotFoundError as e:
+        app.logger.error(
+            "Can't find the config file. Updates to the configuration are not being saved!"
+        )
 
 
 def main(args=None):

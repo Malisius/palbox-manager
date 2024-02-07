@@ -11,39 +11,65 @@
             integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls"
             crossorigin="anonymous">
         <link rel="stylesheet" href="/static/css/styles.css">
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     </head>
     <body>
-        <div id="alyout">
-            <div id="main">
-                <div class="header">
-                    <h1>Palbox First-Time Setup</h1>
-                </div>
-                <div class="content">
-                    <form action class="pure-form pure-form-aligned">
-                        <fieldset>
-                            <div class="pure-control-group">
-                                <input type="password" name="password"
-                                    id="password-input">
-                                <label for="password-input">Palbox Manager
-                                    Password</label>
+        <div id="main">
+            <div class="header">
+                <h1>Palbox First-Time Setup</h1>
+            </div>
+            <div class="content">
+                <form method="Post" class="pure-form pure-form-aligned">
+                    <fieldset>
+                        {% for message in get_flashed_messages() %}
+                        <div class="pure-control-group">
+                            <div class="form-error">
+                                {{message}}
                             </div>
-                            <div class="pure-control-group">
-                                <input type="text" name="steamcmd"
-                                    id="steamcmd-input"
-                                    placeholder="Optional">
-                                <label for="steamcmd-input">Steamcmd Executable
-                                    Path</label>
-                            </div>
-                            <div class="pure-control-group">
-                                <input type="text" name="gamepath"
-                                    id="gamepath-input" placeholder="Optional">
-                                <label for="gamepath-input">Palworld Instalation
-                                    Path</label>
-                            </div>
-                        </fieldset>
-                    </form>
-                </div>
+                        </div>
+                        {% endfor %}
+                        <div class="pure-control-group">
+                            <input type="password" name="password"
+                                id="password-input">
+                            <label for="password-input">Palbox Manager
+                                Password</label>
+                        </div>
+                        <div class="pure-control-group">
+                            <input type="text" name="steamcmd"
+                                id="steamcmd-input"
+                                placeholder="Optional">
+                            <label for="steamcmd-input">Steamcmd Executable
+                                Path
+                                <span
+                                    onclick="toggleModal('steamcmd-modal')"
+                                    class="material-symbols-outlined material-button">
+                                    help
+                                </span>
+                            </label>
+                        </div>
+                        <div class="pure-control-group">
+                            <input type="text" name="gamepath"
+                                id="gamepath-input" placeholder="Optional">
+                            <label for="gamepath-input">Palworld Instalation
+                                Path</label>
+                        </div>
+                        <div class="pure-control-group">
+                            <button
+                                class="pure-button pure-button-primary button-full-width"
+                                type="submit">Begin
+                                Configuration</button>
+                        </div>
+                    </fieldset>
+                </form>
             </div>
         </div>
+        <div class="modal" id="steamcmd-modal" hidden>
+            <span onclick="toggleModal('steamcmd-modal')"
+                class="material-symbols-outlined close-button material-button">
+                close
+            </span>
+        </div>
+        <script src="/static/js/modal.js"></script>
     </body>
 </html>
